@@ -1,12 +1,11 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { configureRenderer, addLighting, loadCafe } from './cafe-scene.js';
 import { sections } from './content.js';
 
 const HOME = {
@@ -18,20 +17,12 @@ const HOME = {
 
 const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+configureRenderer(renderer);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.0;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFShadowMap;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('#f4e4cf');
-
-// Soft studio reflections for the chrome/brass/glass materials.
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = 0.35;
+const lampLight = addLighting(scene, renderer);
 
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
 
@@ -45,29 +36,6 @@ controls.minDistance = 1.5;
 controls.maxDistance = 60;
 controls.maxPolarAngle = THREE.MathUtils.degToRad(84);
 controls.update();
-
-// ---------------------------------------------------------------- lights
-
-scene.add(new THREE.HemisphereLight('#fff4e6', '#c9b29b', 1.1));
-
-const sun = new THREE.DirectionalLight('#ffe9cf', 2.4);
-sun.position.set(7, 12, 8);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.camera.left = -9;
-sun.shadow.camera.right = 9;
-sun.shadow.camera.top = 9;
-sun.shadow.camera.bottom = -9;
-sun.shadow.camera.near = 1;
-sun.shadow.camera.far = 30;
-sun.shadow.bias = -0.0004;
-sun.shadow.normalBias = 0.02;
-scene.add(sun);
-
-// Warm fill from the wall lamp by the window.
-const lampLight = new THREE.PointLight('#ffb866', 2.5, 6, 1.6);
-lampLight.position.set(2.6, 3.7, -2.4);
-scene.add(lampLight);
 
 // ---------------------------------------------------------------- post
 
@@ -95,94 +63,32 @@ manager.onProgress = (_url, loaded, total) => {
   loaderFill.style.width = `${(loaded / total) * 100}%`;
 };
 
-const nodes = {}; // mesh name -> Object3D
+let nodes = {}; // object name -> Object3D
 const meshToSection = new Map(); // mesh -> section
-const clickable = []; // meshes the raycaster tests against
 let lampOn = true;
 let bulbMaterial = null;
 
-new GLTFLoader(manager).load(
-  `${import.meta.env.BASE_URL}models/lowpoly_cafe.glb`,
-  (gltf) => {
-    const model = gltf.scene;
-
-    model.traverse((obj) => {
-      if (!obj.isMesh) return;
-      nodes[obj.name] = obj;
-      obj.castShadow = true;
-      obj.receiveShadow = true;
-      fixMaterial(obj);
-    });
-    // Multi-material meshes load as a Group of primitives; register the group name too.
-    model.traverse((obj) => {
-      if (obj.isGroup && obj.name) nodes[obj.name] = obj;
-    });
-
-    // The export's floor is a black shadow catcher; make it shadow-only over the background.
-    const ground = nodes.StudioFloor;
-    if (ground) {
-      ground.castShadow = false;
-      ground.material = new THREE.ShadowMaterial({ color: '#6b4a32', opacity: 0.22 });
-    }
-    for (const name of ['SunbeamVolume', 'WindowSky']) {
-      if (nodes[name]) nodes[name].castShadow = false;
-    }
+loadCafe({
+  manager,
+  onProgress: (e) => {
+    if (e.total) loaderFill.style.width = `${(e.loaded / e.total) * 100}%`;
+  },
+})
+  .then((cafe) => {
+    nodes = cafe.nodes;
+    bulbMaterial = cafe.bulbMaterial;
 
     setupSections();
     setupEasterEggs();
 
-    scene.add(model);
+    scene.add(cafe.model);
     loaderEl.classList.add('done');
     setTimeout(showWelcome, 500); // after the loader fades out
-  },
-  (e) => {
-    if (e.total) loaderFill.style.width = `${(e.loaded / e.total) * 100}%`;
-  },
-  (err) => {
+  })
+  .catch((err) => {
     console.error(err);
     loaderEl.querySelector('p').textContent = 'Could not load the café model.';
-  },
-);
-
-// A few materials in the export need fixing up for real-time rendering.
-function fixMaterial(mesh) {
-  const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-  for (const m of mats) {
-    switch (m.name) {
-      case 'Cafe_Glass':
-        m.transparent = true;
-        m.opacity = 0.18;
-        m.roughness = 0.05;
-        m.metalness = 0;
-        m.depthWrite = false;
-        mesh.castShadow = false;
-        mesh.renderOrder = 1;
-        break;
-      case 'Cafe_Sunbeam': {
-        // Fake volumetric light shaft: additive, unlit, no shadows, not clickable.
-        const beam = new THREE.MeshBasicMaterial({
-          color: '#ffd9a0',
-          transparent: true,
-          opacity: 0.07,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-          side: THREE.DoubleSide,
-        });
-        beam.name = m.name;
-        mesh.material = beam;
-        mesh.castShadow = false;
-        mesh.receiveShadow = false;
-        mesh.raycast = () => {};
-        mesh.renderOrder = 2;
-        break;
-      }
-      case 'Cafe_Bulb':
-        bulbMaterial = m;
-        m.userData.onIntensity = m.emissiveIntensity;
-        break;
-    }
-  }
-}
+  });
 
 // ---------------------------------------------------------------- sections
 

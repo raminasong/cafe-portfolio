@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Café · Ramina Song</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="/src/cafe.css" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <div id="loader">
+      <p>Brewing…</p>
+      <div class="bar"><span id="loader-fill"></span></div>
+    </div>
+
+    <div id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title" hidden>
+      <div class="welcome-card">
+        <h2 id="welcome-title">Hi, I'm Ramina!</h2>
+        <p>Welcome to my portfolio. Feel free to click around the café to get to know me!</p>
+        <button id="welcome-close">Come on in</button>
+      </div>
+    </div>
+
+    <nav id="nav"><a href="./" class="nav-home">← Home</a></nav>
+    <div id="tooltip" hidden></div>
+
+    <aside id="panel" aria-hidden="true">
+      <button id="panel-close" aria-label="Close">×</button>
+      <div id="panel-body"></div>
+    </aside>
+
+    <p id="hint">Drag to look around · click objects to explore</p>
+
+    <script type="module" src="/src/cafe.js"></script>
+  </body>
+</html>

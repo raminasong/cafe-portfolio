@@ -3,35 +3,227 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Café Portfolio</title>
-    <link rel="stylesheet" href="/src/style.css" />
+    <title>Ramina Song · UX & Data</title>
+    <meta name="description" content="Ramina Song — Cognitive Science and Data Science at UC Berkeley. UX design and data analytics portfolio." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Pinyon+Script&display=swap"
+    />
+    <link rel="stylesheet" href="/src/home.css" />
   </head>
   <body>
-    <canvas id="scene"></canvas>
+    <main id="top">
+      <!-- ============================================================ HERO -->
+      <section class="hero wrap">
+        <div class="hero-text">
+          <p class="eyebrow"><span class="dot"></span>Open to UX &amp; data analytics roles</p>
+          <h1>Ramina Song</h1>
+          <p class="lede">
+            Cognitive Science and Data Science student at UC Berkeley. I build data pipelines, study
+            how people make decisions, and design interfaces people enjoy using.
+          </p>
+          <div class="actions">
+            <a class="btn" href="#projects">View work</a>
+            <a class="btn" href="#contact">Get in touch</a>
+            <a class="btn btn-dark" href="Ramina_Song_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+          </div>
+        </div>
 
-    <div id="loader">
-      <p>Brewing…</p>
-      <div class="bar"><span id="loader-fill"></span></div>
-    </div>
+        <div class="hero-visual">
+          <canvas id="hero-cafe" aria-label="3D model of a small café. Drag to turn it."></canvas>
+          <a class="enter-cafe" href="cafe.html">Step inside the café →</a>
+        </div>
+      </section>
 
-    <div id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title" hidden>
-      <div class="welcome-card">
-        <h2 id="welcome-title">Hi, I'm Ramina!</h2>
-        <p>Welcome to my portfolio. Feel free to click around the café to get to know me!</p>
-        <button id="welcome-close">Come on in</button>
-      </div>
-    </div>
+      <!-- ====================================================== EXPERIENCE -->
+      <section id="experience" class="section wrap">
+        <p class="label">Experience</p>
+        <h2>Where I've worked</h2>
 
-    <nav id="nav"></nav>
-    <div id="tooltip" hidden></div>
+        <div class="timeline">
+          <article class="row">
+            <div class="row-meta">
+              <p class="date">June 2026 – Present</p>
+              <p class="org">UC Berkeley Experimental Social Science Laboratory</p>
+              <span class="badge">Current</span>
+            </div>
+            <div class="row-body">
+              <h3>Research Assistant</h3>
+              <ul>
+                <li>Build a pandas ETL pipeline (SQL extracts, joins, groupby aggregations) over 290K+ participant records, replacing manual reporting on MySQL and <strong>cutting recurring report turnaround 60%</strong>.</li>
+                <li>Analyze a 12-year multi-channel acquisition dataset to deliver data-driven recruitment strategies, <strong>increasing signups 20%</strong>.</li>
+                <li>Audit 2 pre-submission papers and their R scripts for data integrity, reproducibility, and methodology errors, <strong>flagging 10+ discrepancies</strong> that could bias reported results.</li>
+                <li>Oversee execution of 5+ behavioral experiments with <strong>8,000+ participants</strong>, including scheduling and protocol compliance.</li>
+              </ul>
+            </div>
+          </article>
 
-    <aside id="panel" aria-hidden="true">
-      <button id="panel-close" aria-label="Close">×</button>
-      <div id="panel-body"></div>
-    </aside>
+          <article class="row">
+            <div class="row-meta">
+              <p class="date">Jan 2025 – Present</p>
+              <p class="org"><a href="https://baremagazine.org" target="_blank" rel="noopener">BARE Creative Magazine ↗</a></p>
+              <span class="badge">Current</span>
+            </div>
+            <div class="row-body">
+              <h3>Web Director</h3>
+              <ul>
+                <li>Iterate on Figma mockups across multiple design reviews, locking UI before production development.</li>
+                <li>Lead a 5-person full-stack team (task assignment, code review, Git workflow), <strong>increasing site engagement 25%</strong>.</li>
+                <li>Architect a custom 3D page-flipping effect in React, recreating the experience of flipping through a magazine.</li>
+              </ul>
+            </div>
+          </article>
 
-    <p id="hint">Drag to look around · click objects to explore</p>
+          <article class="row">
+            <div class="row-meta">
+              <p class="date">Sept 2025 – May 2026</p>
+              <p class="org">ASUC Senator Beardsley's Office</p>
+            </div>
+            <div class="row-body">
+              <h3>University Student Affairs Representative</h3>
+              <ul>
+                <li>Served as a liaison between students and university leadership, translating feedback from <strong>21,500+ students</strong> into actionable insights for campus policy discussions.</li>
+                <li>Worked with 3 ASUC senators and Residential Life to assess 200+ delayed housing offers, identifying systemic bottlenecks and presenting reforms <strong>projected to reduce transfer housing delays 25%</strong>.</li>
+                <li>Co-authored a 12-page policy report recommending the ASUC Investment Fund allocate 5–10% of its sustainable portfolio toward nuclear energy ventures, aligning assets with campus climate goals.</li>
+              </ul>
+            </div>
+          </article>
 
-    <script type="module" src="/src/main.js"></script>
+          <article class="row">
+            <div class="row-meta">
+              <p class="date">Aug 2024 – May 2025</p>
+              <p class="org">Associated Students of Irvine Valley College</p>
+            </div>
+            <div class="row-body">
+              <h3>Student Affairs Representative</h3>
+              <ul>
+                <li>Designed survey instruments and collected 100+ responses to analyze behavioral trends in student study habits.</li>
+                <li>Represented <strong>16,200+ students</strong> as an elected representative, partnering with faculty, deans, and district administrators on data-backed policy recommendations.</li>
+                <li>Authored and launched a peer-support program connecting <strong>40+ students</strong> to structured study programs based on survey responses.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ======================================================== PROJECTS -->
+      <section id="projects" class="section wrap">
+        <p class="label">Projects</p>
+        <h2>Selected work</h2>
+
+        <!-- Link to yoursite/?focus=data or ?focus=ux to open with a filter already chosen. -->
+        <div class="filters" role="group" aria-label="Filter projects">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="ux">UX design</button>
+          <button class="chip" data-filter="data">Data analytics</button>
+        </div>
+
+        <div class="grid">
+          <!-- data-tags: "ux", "data", or "ux data" for both.
+               To add a link to a card: <a href="https://..." class="card-link" target="_blank" rel="noopener">View on GitHub →</a> -->
+          <article class="card" data-tags="ux">
+            <p class="card-tag">UX · React, Expo, AsyncStorage</p>
+            <h3>Teta: iOS meditation alarm</h3>
+            <p>An iOS app that lets you pick a meditation the night before, so one tap at the alarm starts it. Built offline-first with on-device audio storage, then beta tested with 5 users and iterated on the UX and alarm audio from their feedback.</p>
+          </article>
+
+          <article class="card" data-tags="ux">
+            <p class="card-tag">UX · Figma, React</p>
+            <h3>BARE Creative Magazine website</h3>
+            <p>Led design and development of the magazine's site: Figma mockups through several design reviews, a 5-person dev team, and a custom 3D page-flip effect that feels like turning real pages. Site engagement rose 25%.</p>
+            <a href="https://baremagazine.org" class="card-link" target="_blank" rel="noopener">Visit the site →</a>
+          </article>
+
+          <article class="card" data-tags="data">
+            <p class="card-tag">Data · Python, machine learning</p>
+            <h3>Movie-genre classifier</h3>
+            <p>A k-nearest-neighbors classifier on 5,000 word-frequency features from film dialogue, reaching 70% accuracy on test data. Chose k = 15 by comparing candidates for bias vs. variance, and used error analysis to guide feature selection.</p>
+          </article>
+
+          <article class="card" data-tags="data">
+            <p class="card-tag">Data · Python, algorithms</p>
+            <h3>Computer-aided typing</h3>
+            <p>Recursive string-similarity algorithms for autocorrect suggestions across large text corpora, evaluated across corpus sizes and edit-distance thresholds to balance accuracy against speed.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ======================================================= EDUCATION -->
+      <section id="education" class="section wrap">
+        <p class="label">Education</p>
+        <h2>Where I study</h2>
+
+        <article class="row">
+          <div class="row-meta">
+            <p class="date">Aug 2025 – Dec 2027</p>
+            <p class="org">University of California, Berkeley</p>
+          </div>
+          <div class="row-body">
+            <h3>B.A. Cognitive Science &amp; B.A. Data Science</h3>
+            <p class="coursework-label">Relevant coursework</p>
+            <ul class="pills">
+              <li>Computational Methods of Cognition</li>
+              <li>Data Structures &amp; Algorithms</li>
+              <li>Discrete Mathematics &amp; Probability</li>
+              <li>Data Science</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <!-- ========================================================== SKILLS -->
+      <section id="skills" class="section wrap">
+        <p class="label">Skills</p>
+        <h2>Toolkit</h2>
+
+        <div class="skills">
+          <div class="skill-row">
+            <h3>Languages &amp; tools</h3>
+            <ul class="pills">
+              <li>Python</li><li>R</li><li>SQL</li><li>MySQL</li><li>Java</li><li>C/C++</li><li>Git</li><li>Excel</li>
+            </ul>
+          </div>
+          <div class="skill-row">
+            <h3>Data analysis</h3>
+            <ul class="pills">
+              <li>pandas</li><li>NumPy</li><li>Polars</li><li>ETL pipelines</li><li>Statistical analysis</li><li>Data visualization</li><li>Machine learning</li>
+            </ul>
+          </div>
+          <div class="skill-row">
+            <h3>Design</h3>
+            <ul class="pills">
+              <li>Figma</li><li>Survey design</li><li>User testing</li>
+            </ul>
+          </div>
+          <div class="skill-row">
+            <h3>Frontend &amp; systems</h3>
+            <ul class="pills">
+              <li>React</li><li>Next.js</li><li>Blender</li><li>Render</li><li>Vercel</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= CONTACT -->
+      <section id="contact" class="section wrap contact">
+        <p class="label">Contact</p>
+        <h2>Let's grab a coffee.</h2>
+        <p class="lede">I'm always happy to chat about design, data, or a role you're hiring for.</p>
+        <div class="actions">
+          <a class="btn btn-dark" href="mailto:raminasong@berkeley.edu">Email me</a>
+          <a class="btn" href="https://www.linkedin.com/in/ramina-song-96b38a308/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/raminasong" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer wrap">
+      <p>© 2026 Ramina Song</p>
+      <a href="cafe.html">Visit the café ☕</a>
+    </footer>
+
+    <script type="module" src="/src/home.js"></script>
   </body>
 </html>
